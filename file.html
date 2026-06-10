@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Calculator</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    body{
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        background: linear-gradient(135deg, #667eea, #0c090f);
+    }
+
+    .calculator{
+        width:350px;
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(15px);
+        border-radius:25px;
+        padding:20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .display{
+        width:100%;
+        height:80px;
+        border:none;
+        outline:none;
+        border-radius:15px;
+        background: rgba(255,255,255,0.15);
+        color:white;
+        font-size:2rem;
+        text-align:right;
+        padding:15px;
+        margin-bottom:20px;
+    }
+
+    .buttons{
+        display:grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap:12px;
+    }
+
+    button{
+        border:none;
+        height:65px;
+        border-radius:15px;
+        font-size:1.2rem;
+        cursor:pointer;
+        transition:0.2s ease;
+        color:white;
+        background: rgba(255,255,255,0.15);
+    }
+
+    button:hover{
+        transform: translateY(-3px);
+        background: rgba(255,255,255,0.25);
+    }
+
+    .operator{
+        background:#ff9500;
+    }
+
+    .operator:hover{
+        background:#ffad33;
+    }
+
+    .equal{
+        background:#34c759;
+        grid-column: span 2;
+    }
+
+    .equal:hover{
+        background:#45d96b;
+    }
+
+    .clear{
+        background:#ff3b30;
+    }
+
+    .clear:hover{
+        background:#ff5c52;
+    }
+</style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" class="display" id="display" readonly>
+
+    <div class="buttons">
+        <button class="clear" onclick="clearDisplay()">C</button>
+        <button onclick="appendValue('%')">%</button>
+        <button onclick="appendValue('.')">.</button>
+        <button class="operator" onclick="appendValue('/')">÷</button>
+
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button class="operator" onclick="appendValue('*')">×</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button class="operator" onclick="appendValue('-')">−</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button class="operator" onclick="appendValue('+')">+</button>
+
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="deleteLast()">⌫</button>
+        <button class="equal" onclick="calculate()">=</button>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById("display");
+
+    function appendValue(value){
+        display.value += value;
+    }
+
+    function clearDisplay(){
+        display.value = "";
+    }
+
+    function deleteLast(){
+        display.value = display.value.slice(0, -1);
+    }
+
+    function calculate(){
+        try{
+            display.value = eval(display.value);
+        } catch {
+            display.value = "Error";
+        }
+    }
+
+    document.addEventListener("keydown", (e) => {
+        if("0123456789+-*/.%".includes(e.key)){
+            appendValue(e.key);
+        }
+        else if(e.key === "Enter"){
+            calculate();
+        }
+        else if(e.key === "Backspace"){
+            deleteLast();
+        }
+        else if(e.key === "Escape"){
+            clearDisplay();
+        }
+    });
+</script>
+
+</body>
+</html>
